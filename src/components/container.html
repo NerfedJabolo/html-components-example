@@ -1,8 +1,10 @@
-<div class="flex h-screen">
-  <menu data-include="./components/menu.html"></menu>
-  <div class="w-full min-h-[120vh] overflow-y-auto">
+<div class="flex flex-1 h-screen bg-gray-800 z-50">
+  <menu
+    class="w-1/3 h-screen overflow-y-auto"
+    data-include="./components/menu.html"
+  ></menu>
+  <div class="w-2/3 h-[100vh] pb-20 overflow-y-auto">
     <div data-include="./components/getting-started.html" data-content></div>
-
     <div data-include="./components/components.html" data-content></div>
   </div>
 </div>
