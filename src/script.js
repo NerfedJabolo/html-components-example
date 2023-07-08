@@ -1,46 +1,33 @@
-window.addEventListener('DOMContentLoaded', async () => {
-  async function includeHTML(element) {
-    const file = element.getAttribute('data-include');
-    const response = await fetch(file);
-    const html = await response.text();
-
-    const template = document.createElement('template');
-    template.innerHTML = html.trim();
-
-    const content = template.content.cloneNode(true);
-    const parentElement = element.parentElement;
-
-    if (parentElement) {
-      const componentContent = element.innerHTML.trim();
-
-      const contentElements = content.querySelectorAll('[data-content]');
-      const promises = Array.from(contentElements, (contentElement) => {
-        return new Promise((resolve) => {
-          const elementType = contentElement.tagName.toLowerCase();
-          contentElement[
-            elementType === 'input' || elementType === 'textarea'
-              ? 'value'
-              : 'innerHTML'
-          ] = componentContent;
-          resolve();
-        });
-      });
-
-      await Promise.all(promises);
-
-      const fragment = document.createDocumentFragment();
-      const clonedNodes = Array.from(content.childNodes);
-
-      clonedNodes.forEach((node) => fragment.appendChild(node));
-
-      parentElement.insertBefore(fragment, element);
-      element.remove();
+window.addEventListener("DOMContentLoaded", async () => {
+  async function e(t) {
+    let a = t.getAttribute("data-include"),
+      l = await fetch(a),
+      n = await l.text(),
+      r = document.createElement("template");
+    r.innerHTML = n.trim();
+    let i = r.content.cloneNode(!0),
+      o = t.parentElement;
+    if (o) {
+      let c = t.innerHTML.trim(),
+        d = i.querySelectorAll("[data-content]"),
+        m = Array.from(
+          d,
+          (e) =>
+            new Promise((t) => {
+              let a = e.tagName.toLowerCase();
+              (e["input" === a || "textarea" === a ? "value" : "innerHTML"] =
+                c),
+                t();
+            })
+        );
+      await Promise.all(m);
+      let u = document.createDocumentFragment(),
+        f = Array.from(i.childNodes);
+      f.forEach((e) => u.appendChild(e)), o.insertBefore(u, t), t.remove();
     }
-
-    const nestedElements = document.querySelectorAll('[data-include]');
-    await Promise.all(Array.from(nestedElements, includeHTML));
+    let w = document.querySelectorAll("[data-include]");
+    await Promise.all(Array.from(w, e));
   }
-
-  const includeElements = document.querySelectorAll('[data-include]');
-  await Promise.all(Array.from(includeElements, includeHTML));
+  let t = document.querySelectorAll("[data-include]");
+  await Promise.all(Array.from(t, e));
 });
