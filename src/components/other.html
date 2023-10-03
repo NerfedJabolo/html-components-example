@@ -5,10 +5,37 @@
     <img src="./imgs/html-components.webp" alt="" class="h-12 w-12" />
   </a>
   <ul class="flex flex-row space-x-3">
-    <li>About</li>
-    <li>Contact</li>
+    <a href="https://www.buymeacoffee.com/htmlcomponents">
+      <button class="coffeebutton">Buy me a Coffee</button>
+    </a>
   </ul>
   <a href="./docs.html">
     <docsButton data-include="./components/another.html">Docs</docsButton>
   </a>
+
+  <style>
+    .coffeebutton {
+      height: 3.5rem;
+      text-decoration: none;
+      align-items: center;
+      display: inline-flex;
+      color: #ffffff;
+      background-color: #ff813f;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      padding: 0.7rem 1rem 0.7rem 1rem;
+      font-size: 2rem;
+      letter-spacing: 0.6px;
+      box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5);
+      transition: 0.3s all linear;
+      &:hover,
+      &:active,
+      &:focus {
+        text-decoration: none;
+        box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5);
+        opacity: 0.85;
+        color: #ffffff;
+      }
+    }
+  </style>
 </nav>
