@@ -21,36 +21,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-window.addEventListener("DOMContentLoaded", async () => {
-  async function e(t) {
-    let a = t.getAttribute("data-include"),
-      l = await fetch(a),
-      n = await l.text(),
-      r = document.createElement("template");
-    r.innerHTML = n.trim();
-    let i = r.content.cloneNode(!0),
-      o = t.parentElement;
-    if (o) {
-      let c = t.innerHTML.trim(),
-        d = i.querySelectorAll("[data-content]"),
-        m = Array.from(
-          d,
-          (e) =>
-            new Promise((t) => {
-              let a = e.tagName.toLowerCase();
-              (e["input" === a || "textarea" === a ? "value" : "innerHTML"] =
-                c),
-                t();
-            })
-        );
-      await Promise.all(m);
-      let u = document.createDocumentFragment(),
-        f = Array.from(i.childNodes);
-      f.forEach((e) => u.appendChild(e)), o.insertBefore(u, t), t.remove();
-    }
-    let w = document.querySelectorAll("[data-include]");
-    await Promise.all(Array.from(w, e));
-  }
-  let t = document.querySelectorAll("[data-include]");
-  await Promise.all(Array.from(t, e));
-});
+window.addEventListener("DOMContentLoaded",async()=>{let e={};async function t(a){let l=a.getAttribute("data-include");e[l]||(e[l]=fetch(l).then(e=>e.text()));let n=await e[l],r=document.createElement("template");r.innerHTML=n.trim();let o=r.content.cloneNode(!0),i=a.parentElement;if(i){let c=a.innerHTML.trim(),d=o.querySelectorAll("[data-content]"),m=Array.from(d,e=>new Promise(t=>{let a=e.tagName.toLowerCase();e["input"===a||"textarea"===a?"value":"innerHTML"]=c,t()}));await Promise.all(m);let f=document.createDocumentFragment(),u=Array.from(o.childNodes);u.forEach(e=>f.appendChild(e)),i.insertBefore(f,a),a.remove()}let s=Array.from(document.querySelectorAll("[data-include]"));for(let w of s)await t(w)}let a=Array.from(document.querySelectorAll("[data-include]"));for(let l of a)await t(l)});
