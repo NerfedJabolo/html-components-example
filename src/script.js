@@ -1,15 +1,18 @@
-// Add an event listener to run the code when the DOM (Document Object Model) is fully loaded.
 window.addEventListener('DOMContentLoaded', async () => {
-  // Define an asynchronous function named 'includeHTML' which takes an 'element' parameter.
+  // Create a cache object to store fetched content promises.
+  const cache = {};
+
   async function includeHTML(element) {
     // Get the 'data-include' attribute from the given 'element'.
     const file = element.getAttribute('data-include');
 
-    // Fetch the content of the file specified in the 'data-include' attribute.
-    const response = await fetch(file);
+    // If not in cache, store the fetch promise
+    if (!cache[file]) {
+      cache[file] = fetch(file).then((response) => response.text());
+    }
 
-    // Convert the fetched response to text.
-    const html = await response.text();
+    // Await the cached promise
+    const html = await cache[file];
 
     // Create a template element and set its HTML content to the fetched HTML.
     const template = document.createElement('template');
@@ -66,12 +69,20 @@ window.addEventListener('DOMContentLoaded', async () => {
       element.remove();
     }
 
-    // Find nested elements with a 'data-include' attribute and include their content.
-    const nestedElements = document.querySelectorAll('[data-include]');
-    await Promise.all(Array.from(nestedElements, includeHTML));
+    // Serialize the inclusion of nested elements
+    const nestedElements = Array.from(
+      document.querySelectorAll('[data-include]')
+    );
+    for (const nestedElement of nestedElements) {
+      await includeHTML(nestedElement);
+    }
   }
 
-  // Find all elements with a 'data-include' attribute and include their content.
-  const includeElements = document.querySelectorAll('[data-include]');
-  await Promise.all(Array.from(includeElements, includeHTML));
+  // Serialize the inclusion of elements
+  const includeElements = Array.from(
+    document.querySelectorAll('[data-include]')
+  );
+  for (const includeElement of includeElements) {
+    await includeHTML(includeElement);
+  }
 });
